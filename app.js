@@ -4,6 +4,7 @@ const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
+const jest = require("jest");
 
 const teamMembers = [];
 
@@ -18,7 +19,7 @@ function createTeam() {
         {
             type: "list",
             name: "memberChoice",
-            message: "What type of member are you?",
+            message: "Choose member type:",
             choices: [
                 "Manager",
                 "Intern",
@@ -47,27 +48,51 @@ function createTeam() {
            {
                type: "input",
                name: "ManangerName",
-               message: "What is yourfirst name?"
+               message: "Enter manager name:",
+               validate: async (input) => {
+                if (input == "" || /\s/.test(input)){
+                    return "Please enter first or last name.";
+                }
+                return true;
+            }
            },
            {
                type: "input",
-               name: "managerID",
-               message:"What is your ID number?"
+               name: "managerId",
+               message:"Enter manager ID?",
+               validate: async (input) => {
+                if (isNaN(input)) {
+                    return "Please enter a number";
+                }
+                return true;
+            }
            },
            {
                type: "input",
                name: "managerEmail",
-               message: "What is your email address?"
+               message: "Enter email address:",
+               validate: async (input) => {
+                if (/\S+@\S+\.\S+/.test(input)) {
+                    return true;
+                }
+                return "Please enter a valid email address."
+            },
            },
            {
                type: "input",
                name: "managerOfficeNumber",
-               message: "What is your office number?"
+               message: "Enter office number:",
+               validate: async (input)=> {
+                if (isNaN(input)) {
+                    return "Please enter a number"
+                }
+                return true;
+            },
            }
         ]).then(userChoice => {
             console.log(userChoice);
 
-            const manager = new Manager(userChoice.ManangerName, userChoice.managerID, userChoice.managerEmail, userChoice.managerOfficeNumber);
+            const manager = new Manager(userChoice.ManangerName, userChoice.managerId, userChoice.managerEmail, userChoice.managerOfficeNumber);
             teamMembers.push(manager);
             createTeam();
         })
@@ -79,23 +104,47 @@ function createTeam() {
             {
                  type: "input",
                 name: "engineerName",
-                 message: "What is your first name?",
+                 message: "Enter engineer name",
+                 validate: async (input) => {
+                    if (input == "" || /\s/.test(input)){
+                        return "Please enter first or last name.";
+                    }
+                    return true;
+                },
             },
             {
                 type: "input",
-                 name: "engineerID",
-                 message: "What is your ID number?"
+                 name: "engineerId",
+                 message: "Enter engineer ID",
+                 validate: async (input) => {
+                     if (isNaN(input)) {
+                         return "Please enter a number";
+                     }
+                     return true;
+                 }
             },
             {
                 type: "input",
                 name: "engineerEmail",
-                message: " What is your email address?",
-                validate: emailVal()
+                message: "Enter email address:",
+                validate: async (input) => {
+                    if (/\S+@\S+\.\S+/.test(input)) {
+                        return true;
+                    }
+                    return "Please enter a valid email address."
+                },
+                
             },
             {
                 type: "input",
                 name: "engineerGithub",
-                 message: " What is your github username?"
+                 message: "Enter github username:",
+                 validate: async (input) => {
+                    if (input == "" || /\s/.test(input)){
+                        return "please enter school name:"
+                    }
+                    return true;
+                }
             }
 
 
@@ -103,7 +152,7 @@ function createTeam() {
         ]).then(userChoice => {
             console.log(userChoice);
                 
-             const engineer = new Engineer(userChoice.engineerName, userChoice.engineerID, userChoice.engineerEmail, userChoice.engineerGithub);
+             const engineer = new Engineer(userChoice.engineerName, userChoice.engineerId, userChoice.engineerEmail, userChoice.engineerGithub);
             teamMembers.push(engineer);
              createTeam();
         });
@@ -115,27 +164,51 @@ function createTeam() {
             {
                 type: "input",
                 name: "internName",
-                message: "What is your first name?"
+                message: "Enter intern name:",
+                validate: async (input) => {
+                    if (input == "" || /\s/.test(input)){
+                        return "Please enter first or last name.";
+                    }
+                    return true;
+                
             },
             {
                 type: "input",
-                name: "internID",
-                message: "What is your ID number?"
+                name: "internId",
+                message: "Enter intern ID:",
+                 validate: async (input) => {
+                     if (isNaN(input)) {
+                         return "Please enter a number";
+                     }
+                     return true;
+                 }
             },
             {
                 type: "input",
                 name: "internEmail",
-                message: "What is your email address?"
+                message: "Enter email address:",
+                validate: async (input) => {
+                    if (/\S+@\S+\.\S+/.test(input)) {
+                        return true;
+                    }
+                    return "Please enter a valid email address."
+                },
             },
             {
                 type: "input",
                 name: "internSchool",
-                message: "What school do your attend?"
+                message: "Enter school:",
+                validate: async (input) => {
+                    if (input == "" || /\s/.test(input)){
+                        return "please enter school name:"
+                    }
+                    return true;
+                }
             }
         ]).then(userChoice => {
             console.log(userChoice);
 
-            const intern = new Intern(userChoice.internName, userChoice.internID, userChoice.internEmail, userChoice.internSchool);
+            const intern = new Intern(userChoice.internName, userChoice.internId, userChoice.internEmail, userChoice.internSchool);
             teamMembers.push(intern);
             createTeam();
         });
@@ -145,33 +218,3 @@ function createTeam() {
 module.exports = teamMembers;
 
 createTeam();
-
-
-
-
-
-
-
-
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
-
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
-
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
-
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
