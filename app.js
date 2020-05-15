@@ -23,7 +23,8 @@ function createTeam() {
             choices: [
                 "Manager",
                 "Intern",
-                "Engineer"
+                "Engineer",
+                "Exit"
             ]
         }
     ]).then(userChoice => {
@@ -54,7 +55,7 @@ function createTeam() {
                     return "Please enter first or last name.";
                 }
                 return true;
-            }
+               }
            },
            {
                type: "input",
@@ -65,7 +66,7 @@ function createTeam() {
                     return "Please enter a number";
                 }
                 return true;
-            }
+               }
            },
            {
                type: "input",
@@ -76,7 +77,7 @@ function createTeam() {
                     return true;
                 }
                 return "Please enter a valid email address."
-            },
+               },
            },
            {
                type: "input",
@@ -87,8 +88,8 @@ function createTeam() {
                     return "Please enter a number"
                 }
                 return true;
-            },
-           }
+             },
+           },
         ]).then(userChoice => {
             console.log(userChoice);
 
@@ -97,15 +98,15 @@ function createTeam() {
             createTeam();
         })
 
-    }
+    };
 
     function addEngineer(){
         inquirer.prompt([
             {
-                 type: "input",
+                type: "input",
                 name: "engineerName",
-                 message: "Enter engineer name",
-                 validate: async (input) => {
+                message: "Enter engineer name",
+                validate: async (input) => {
                     if (input == "" || /\s/.test(input)){
                         return "Please enter first or last name.";
                     }
@@ -114,14 +115,14 @@ function createTeam() {
             },
             {
                 type: "input",
-                 name: "engineerId",
-                 message: "Enter engineer ID",
-                 validate: async (input) => {
+                name: "engineerId",
+                message: "Enter engineer ID",
+                validate: async (input) => {
                      if (isNaN(input)) {
                          return "Please enter a number";
-                     }
+                    }
                      return true;
-                 }
+                }
             },
             {
                 type: "input",
@@ -167,12 +168,13 @@ function createTeam() {
                 message: "Enter intern name:",
                 validate: async (input) => {
                     if (input == "" || /\s/.test(input)){
-                        return "Please enter first or last name.";
+                        return "please enter school name:"
                     }
                     return true;
-                
+                }
             },
             {
+                
                 type: "input",
                 name: "internId",
                 message: "Enter intern ID:",
@@ -181,7 +183,7 @@ function createTeam() {
                          return "Please enter a number";
                      }
                      return true;
-                 }
+                }
             },
             {
                 type: "input",
