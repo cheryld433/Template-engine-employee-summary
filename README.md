@@ -24,7 +24,7 @@ The object was to build a command line application that created a webpage allowi
 npm install
 
 ## Usage:
-
+![](demo.gif)
 
 ## Contributors:
 
